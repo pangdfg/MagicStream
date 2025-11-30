@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	env "github.com/pangdfg/MagicStream/Server/env"
+	"github.com/pangdfg/MagicStream/Server/env"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
@@ -28,4 +28,18 @@ func Connect() *mongo.Client {
 	}
 
 	return client
+}
+
+func OpenCollection(collectionName string, client *mongo.Client) *mongo.Collection {
+
+	databaseName := env.GetString("DATABASE_NAME", "")
+
+	fmt.Println("DATABASE_NAME: ", databaseName)
+
+	collection := client.Database(databaseName).Collection(collectionName)
+
+	if collection == nil {
+		return nil
+	}
+	return collection
 }
