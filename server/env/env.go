@@ -1,9 +1,20 @@
 package env
 
 import (
+	"fmt"
 	"os"
 	"strconv"
 )
+
+func Check() error {
+    if _, err := os.Stat(".env"); err != nil {
+        if os.IsNotExist(err) {
+            return fmt.Errorf(".env file not found")
+        }
+        return err
+    }
+    return nil
+}
 
 func GetString(key, fallback string) string {
 	val, ok := os.LookupEnv(key)
